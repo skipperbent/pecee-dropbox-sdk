@@ -17,8 +17,6 @@ class DropboxException extends HttpException
 
 		$this->httpResponse = $httpResponse;
 
-		var_dump($httpResponse->getResponse());
-
 		$object = json_decode($httpResponse->getResponse(), true);
 
 		if (is_array($object) && isset($object['error_summary'])) {
