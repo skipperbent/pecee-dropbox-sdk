@@ -1,0 +1,38 @@
+{
+  "name": "pecee/dropbox-sdk",
+  "description": "Mini, lightweight version of the Dropbox v2 SDK.",
+  "keywords": [
+    "dropbox",
+    "pecee",
+    "sdk",
+    "php-sdk",
+    "php",
+    "version 2",
+    "v2"
+  ],
+  "license": "MIT",
+  "homepage": "https://www.pecee.dk",
+  "support": {
+    "source": "https://github.com/skipperbent/pecee-dropbox-sdk"
+  },
+  "authors": [
+    {
+      "name": "Simon Sessingø",
+      "email": "simon.sessingoe@gmail.com"
+    }
+  ],
+  "require": {
+    "pecee/http-service": "1.*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "4.7.7"
+  },
+  "autoload": {
+    "psr-4": {
+      "Pecee\\": "src/Pecee/"
+    }
+  },
+  "config": {
+    "preferred-install": "dist"
+  }
+}
