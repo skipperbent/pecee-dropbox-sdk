@@ -22,7 +22,7 @@
     }
   ],
   "require": {
-    "pecee/http-service": "1.*"
+    "pecee/http-service": "2.*"
   },
   "require-dev": {
     "phpunit/phpunit": "4.7.7"
