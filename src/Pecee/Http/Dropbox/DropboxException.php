@@ -1,4 +1,5 @@
 <?php
+
 namespace Pecee\Http\Dropbox;
 
 use Pecee\Http\HttpException;
@@ -7,35 +8,39 @@ use Pecee\Http\HttpResponse;
 class DropboxException extends HttpException
 {
 
-	protected $errors = [
-		'not_found' => 'File not found.',
-	];
+    protected $errors = [
+        'not_found' => 'File not found.',
+    ];
 
-	public function __construct($message, $code = 0, HttpResponse $httpResponse = null)
-	{
-		parent::__construct($message, $code);
+    public function __construct($message, $code = 0, HttpResponse $httpResponse = null)
+    {
+        parent::__construct($message, $code);
 
-		$this->httpResponse = $httpResponse;
+        $this->httpResponse = $httpResponse;
 
-		$object = json_decode($httpResponse->getResponse(), true);
+        if($this->httpResponse === null) {
+            return;
+        }
 
-		if (is_array($object) && isset($object['error_summary'])) {
+        $object = json_decode($this->httpResponse->getResponse(), true);
 
-			$error = null;
+        if (is_array($object) && isset($object['error_summary'])) {
 
-			foreach ($this->errors as $k => $e) {
-				if (strstr($object['error_summary'], $k) !== false) {
-					$error = $e;
-					break;
-				}
-			}
+            $error = null;
 
-			if ($error !== null) {
-				$this->message .= '. ' . $error;
-			} else {
-				$this->message .= ' (' . $object['error_summary'] . ')';
-			}
-		}
-	}
+            foreach ($this->errors as $k => $e) {
+                if (false !== strpos($object['error_summary'], $k)) {
+                    $error = $e;
+                    break;
+                }
+            }
+
+            if ($error !== null) {
+                $this->message .= '. ' . $error;
+            } else {
+                $this->message .= ' (' . $object['error_summary'] . ')';
+            }
+        }
+    }
 
 }
