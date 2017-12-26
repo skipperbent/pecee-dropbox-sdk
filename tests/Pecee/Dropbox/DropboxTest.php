@@ -1,19 +1,15 @@
 <?php
+namespace Pecee\Dropbox;
 
-class DropboxTest extends PHPUnit_Framework_TestCase
+use Pecee\TestCase;
+
+class DropboxTest extends TestCase
 {
-	protected $service;
-	protected $accessToken = '!!!INSERT-ACCESS-TOKEN-HERE!!!';
-	protected $imageUploadPath = '/dscuz/debug/test.jpg';
-
-	public function __construct()
-	{
-		$this->service = new Pecee\Http\Dropbox\Dropbox($this->accessToken);
-	}
+    protected $imageUploadPath = '/test/test.jpg';
 
 	public function testUpload()
 	{
-		$image = file_get_contents('test.jpg');
+		$image = file_get_contents($this->assetsPath . '/test.jpg');
 		$response = $this->service->upload($image, $this->imageUploadPath);
 
 		$this->assertTrue(is_array($response));

@@ -20,9 +20,19 @@ class Dropbox extends RestBase
 	{
 		parent::__construct();
 		$this->accessToken = $accessToken;
+
+		$this->httpRequest->setReturnHeader(false);
 	}
 
-	public function upload($contents, $destination, $params = [])
+    /**
+     * @param string $contents
+     * @param string $destination
+     * @param array $params
+     * @return array
+     * @throws DropboxException
+     * @throws \Pecee\Http\Rest\RestException
+     */
+	public function upload($contents, $destination, array $params = [])
 	{
 		$this->args = array_merge([
 			'path'       => $destination,
@@ -43,6 +53,12 @@ class Dropbox extends RestBase
 		return json_decode($response->getResponse(), true);
 	}
 
+    /**
+     * @param string $path
+     * @return array
+     * @throws DropboxException
+     * @throws \Pecee\Http\Rest\RestException
+     */
 	public function delete($path)
 	{
 		$this->httpRequest->setContentType('application/json');
@@ -58,6 +74,12 @@ class Dropbox extends RestBase
 		return json_decode($response->getResponse(), true);
 	}
 
+    /**
+     * @param string $path
+     * @return array
+     * @throws DropboxException
+     * @throws \Pecee\Http\Rest\RestException
+     */
 	public function download($path)
 	{
 		$this->args = [
@@ -75,7 +97,7 @@ class Dropbox extends RestBase
 		$header = $response->getHeader('dropbox-api-result');
 
 		if ($header !== null) {
-			$output = array_merge($output, json_decode($header, true));
+			$output += json_decode($header, true);
 		}
 
 		return $output;
@@ -92,14 +114,9 @@ class Dropbox extends RestBase
 	{
 		$this->serviceUrl = $this->serviceUrls[$url];
 
-		$this->httpRequest->setOptions([
-			CURLOPT_SSL_VERIFYHOST => false,
-			CURLOPT_SSL_VERIFYPEER => false,
-		]);
-
 		$headers = ['Authorization: Bearer ' . $this->accessToken];
 
-		if (count($this->args)) {
+		if (count($this->args) > 0) {
 			$headers[] = 'Dropbox-API-Arg: ' . json_encode($this->args);
 		}
 
